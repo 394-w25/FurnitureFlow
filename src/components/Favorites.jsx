@@ -1,6 +1,7 @@
 import React from "react";
 import ItemPanel from "./ItemPanel";
 import MediaCard from "./MediaCard";
+import axios from "axios";
 
 async function fetchFavorites (bounds, user_id) {
   const minLat = bounds.south;
@@ -33,19 +34,42 @@ async function fetchFavorites (bounds, user_id) {
 
 export default function Favorites({mapBounds, setMapBounds, visibleItems, setVisibleItems}) {
   const [userId, setUserId] = React.useState("");
-  const handleFavorites = async (e) => {
-    e.preventDefault();
-    const items = await fetchFavorites(mapBounds, user_id);
-    if (items) {
-       setVisibleItems(items);
-    }
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (!userId) {
+  //       console.error("User ID not found");
+  //       return;
+  //     }
+  //     const items = await fetchFavorites(mapBounds, userId);
+  //     if (items) {
+  //       setVisibleItems(items);
+  //     }
+  //   };
 
-  };
+  //   fetchData();
+  // }, [mapBounds, userId, setVisibleItems]);
   
   return (
     <div>
-      <h1>favorites</h1>
-      <MediaCard></MediaCard>
-    </div>
+    <h1>Favorites</h1>
+    {visibleItems.length === 0 ? (
+      <p>No favorites found.</p>
+    ) : (
+      visibleItems.map((item) => (
+        <MediaCard
+          name={item.name}
+          image={item.image_url}
+          price={new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+          }).format(Number(item.price))}
+          user={item.username}
+          date_posted={item.date_posted}
+          description={item.description}
+          className="flex-1"
+        />
+      ))
+    )}
+  </div>
   );
 }
