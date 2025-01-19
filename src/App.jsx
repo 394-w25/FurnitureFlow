@@ -36,27 +36,27 @@ const App = () => {
           setIsFavoritePage={setIsFavoritePage}
         />
       </div>
-      {isFavoritePage ? (
-        <Favorites />
-      ) : (
-        <Grid container spacing={2}>
-          <Grid item xs={7.3}>
-            <Item>
-              <Map
-                visibleItems={visibleItems}
-                setVisibleItems={setVisibleItems}
-                mapBounds={bounds}
-                setMapBounds={setBounds}
-              />
-            </Item>
-          </Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={7.3}>
+          <Item>
+            <Map
+              visibleItems={visibleItems}
+              setVisibleItems={setVisibleItems}
+              mapBounds={bounds}
+              setMapBounds={setBounds}
+            />
+          </Item>
+        </Grid>
+        {isFavoritePage ? (
+          <Favorites />
+        ) : (
           <Grid item xs={4.7}>
             <Item>
               <ItemPanel items={visibleItems} />
             </Item>
           </Grid>
-        </Grid>
-      )}
+        )}
+      </Grid>
     </>
   );
 };
