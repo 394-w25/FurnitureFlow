@@ -22,6 +22,7 @@ function Navigation({
 
   const toggleFavorite = () => {
     setIsFavorited(!isFavorite);
+    setIsFavoritePage(!isFavorite);
   };
 
   const handlePriceRange = (event, newValue) => {
@@ -129,7 +130,6 @@ function Navigation({
             }`}
             onClick={() => {
               toggleFavorite();
-              setIsFavoritePage(true);
             }}
             title={isFavorite ? "Unfavorite" : "Favorite"}
             aria-label={isFavorite ? "Unfavorite" : "Favorite"}

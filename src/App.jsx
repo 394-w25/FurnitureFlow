@@ -48,7 +48,12 @@ const App = () => {
           </Item>
         </Grid>
         {isFavoritePage ? (
-          <Favorites />
+          <Favorites 
+          mapBounds={bounds}
+          setMapBounds={setBounds}
+          visibleItems={visibleItems}
+          setVisibleItems={setVisibleItems}
+          />
         ) : (
           <Grid item xs={4.7}>
             <Item>
