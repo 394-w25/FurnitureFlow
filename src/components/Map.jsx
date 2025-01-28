@@ -382,7 +382,7 @@ const Map = ({
             overflowY: "auto",
           }}
         >
-          {<ItemPanel items={visibleItems} cardsPerRowParameter={1} />}
+          {<ItemPanel items={visibleItems} cardsPerRowParameter={10} />}
         </Box>
       </Slide>
     </Box>
