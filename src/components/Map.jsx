@@ -2,9 +2,11 @@ import { GoogleMap, MarkerF, InfoWindowF } from "@react-google-maps/api";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Carousel } from "primereact/carousel";
-import { Modal } from "@mui/material";
+import { Modal, useMediaQuery, Box, IconButton, Slide } from "@mui/material";
 import * as React from "react";
-import { Box as MuiBox } from "@mui/material";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ItemPanel from "./ItemPanel";
 
 async function fetchItems(bounds, priceRange, query, category, dateRange) {
   const minLat = bounds.south;
