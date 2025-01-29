@@ -115,7 +115,6 @@ function Navigation({
           </FormControl>
         </div>
         {/* Price Slider */}
-
         <div className="min-w-[90px] max-w-[90px] md:w-40 mx-3">
           <div className="text-center">
             <label className="block text-[0.75rem] font-medium text-gray-700">

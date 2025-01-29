@@ -14,7 +14,6 @@ import { Carousel } from "primereact/carousel";
 import { Button } from "primereact/button";
 import { Tag } from "primereact/tag";
 import { Modal } from "@mui/material";
-import * as React from "react";
 import { useMediaQuery } from "@mui/material";
 import { Box, IconButton, Slide } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
