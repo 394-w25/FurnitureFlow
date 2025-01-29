@@ -30,7 +30,7 @@ const Home = (isLoaded) => {
   const [query, setQuery] = useState("");
   const [bounds, setBounds] = useState(null);
   const [isFavoritePage, setIsFavoritePage] = useState(false);
-  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [priceRange, setPriceRange] = useState([0, 1000] | null);
   const [category, setCategory] = useState("");
   const [dateRange, setDateRange] = useState([null, null]);
   const user = useAuth();

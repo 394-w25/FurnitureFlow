@@ -9,7 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import { auth } from "../firebase/FirebaseConfig";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../services/auth";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -40,7 +40,7 @@ function Navigation({
   const isMobile = useMediaQuery("(max-width: 768px)");
   const { user } = useAuth();
   const navigate = useNavigate();
-
+  const location = useLocation();
   const toggleFavorite = () => {
     setIsFavorited(!isFavorite);
     setIsFavoritePage(!isFavorite);
@@ -115,14 +115,20 @@ function Navigation({
           </FormControl>
         </div>
         {/* Price Slider */}
+
         <div className="min-w-[90px] max-w-[90px] md:w-40 mx-3">
           <div className="text-center">
-            <label className="block text-[0.75rem] font-medium text-gray-700">
-              Prices
-            </label>
-            <label className="block text-[0.75rem] font-medium text-gray-700">
-              (${priceRange[0]} - ${priceRange[1]})
-            </label>
+            {showSearchBar && (
+              <>
+                <label className="block text-[0.75rem] font-medium text-gray-700">
+                  Prices
+                </label>
+
+                <label className="block text-[0.75rem] font-medium text-gray-700">
+                  (${priceRange[0]} - ${priceRange[1]})
+                </label>
+              </>
+            )}
           </div>
           <Slider
             value={priceRange}
@@ -135,44 +141,48 @@ function Navigation({
           />
         </div>
         {/* Date Pickers */}
-        <div className="ml-2">
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <DatePicker
-                label="Start"
-                value={dateRange[0]}
-                onChange={handleStartDateChange}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    size="small"
-                    variant="outlined"
-                    sx={{
-                      width: 120, // Smaller width
-                      height: 30, // Reduce height
-                    }}
+        {dateRange && (
+          <>
+            <div className="ml-2">
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <DatePicker
+                    label="Start"
+                    value={dateRange[0]}
+                    onChange={handleStartDateChange}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        size="small"
+                        variant="outlined"
+                        sx={{
+                          width: 120, // Smaller width
+                          height: 30, // Reduce height
+                        }}
+                      />
+                    )}
                   />
-                )}
-              />
-              <Box sx={{ mx: 1 }}> to </Box>
-              <DatePicker
-                label="End"
-                value={dateRange[1]}
-                onChange={handleEndDateChange}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    size="small"
-                    variant="outlined"
-                    sx={{
-                      width: 120, // Keep consistent width
-                    }}
+                  <Box sx={{ mx: 1 }}> to </Box>
+                  <DatePicker
+                    label="End"
+                    value={dateRange[1]}
+                    onChange={handleEndDateChange}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        size="small"
+                        variant="outlined"
+                        sx={{
+                          width: 120, // Keep consistent width
+                        }}
+                      />
+                    )}
                   />
-                )}
-              />
-            </Box>
-          </LocalizationProvider>
-        </div>
+                </Box>
+              </LocalizationProvider>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -205,7 +215,9 @@ function Navigation({
             </div>
           </div>
         )}
-        {!isMobile && dropdownButtonsAndPriceSliderAndDatePickers}
+        {!isMobile &&
+          location.pathname == "/" &&
+          dropdownButtonsAndPriceSliderAndDatePickers}
         {/* Icons */}
         <div className="flex items-center space-x-4 mr-4">
           <Button
@@ -265,7 +277,9 @@ function Navigation({
           )} */}
         </div>
       </div>
-      {isMobile && dropdownButtonsAndPriceSliderAndDatePickers}
+      {isMobile &&
+        location.pathname == "/" &&
+        dropdownButtonsAndPriceSliderAndDatePickers}
     </nav>
   );
 }
