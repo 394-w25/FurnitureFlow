@@ -118,17 +118,12 @@ function Navigation({
 
         <div className="min-w-[90px] max-w-[90px] md:w-40 mx-3">
           <div className="text-center">
-            {showSearchBar && (
-              <>
-                <label className="block text-[0.75rem] font-medium text-gray-700">
-                  Prices
-                </label>
-
-                <label className="block text-[0.75rem] font-medium text-gray-700">
-                  (${priceRange[0]} - ${priceRange[1]})
-                </label>
-              </>
-            )}
+            <label className="block text-[0.75rem] font-medium text-gray-700">
+              Prices
+            </label>
+            <label className="block text-[0.75rem] font-medium text-gray-700">
+              (${priceRange[0]} - ${priceRange[1]})
+            </label>
           </div>
           <Slider
             value={priceRange}
@@ -141,48 +136,44 @@ function Navigation({
           />
         </div>
         {/* Date Pickers */}
-        {dateRange && (
-          <>
-            <div className="ml-2">
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <DatePicker
-                    label="Start"
-                    value={dateRange[0]}
-                    onChange={handleStartDateChange}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        size="small"
-                        variant="outlined"
-                        sx={{
-                          width: 120, // Smaller width
-                          height: 30, // Reduce height
-                        }}
-                      />
-                    )}
+        <div className="ml-2">
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <DatePicker
+                label="Start"
+                value={dateRange[0]}
+                onChange={handleStartDateChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    size="small"
+                    variant="outlined"
+                    sx={{
+                      width: 120, // Smaller width
+                      height: 30, // Reduce height
+                    }}
                   />
-                  <Box sx={{ mx: 1 }}> to </Box>
-                  <DatePicker
-                    label="End"
-                    value={dateRange[1]}
-                    onChange={handleEndDateChange}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        size="small"
-                        variant="outlined"
-                        sx={{
-                          width: 120, // Keep consistent width
-                        }}
-                      />
-                    )}
+                )}
+              />
+              <Box sx={{ mx: 1 }}> to </Box>
+              <DatePicker
+                label="End"
+                value={dateRange[1]}
+                onChange={handleEndDateChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    size="small"
+                    variant="outlined"
+                    sx={{
+                      width: 120, // Keep consistent width
+                    }}
                   />
-                </Box>
-              </LocalizationProvider>
-            </div>
-          </>
-        )}
+                )}
+              />
+            </Box>
+          </LocalizationProvider>
+        </div>
       </div>
     </div>
   );
