@@ -114,10 +114,15 @@ function Navigation({
           </FormControl>
         </div>
         {/* Price Slider */}
-        <div className="w-36 md:w-40">
-          <label className="block text-[0.75rem] font-medium text-gray-700 mb-1">
-            Prices (${priceRange[0]} - ${priceRange[1]})
-          </label>
+        <div className="min-w-[90px] max-w-[90px] md:w-40 mx-3">
+          <div className="text-center">
+            <label className="block text-[0.75rem] font-medium text-gray-700">
+              Prices
+            </label>
+            <label className="block text-[0.75rem] font-medium text-gray-700">
+              (${priceRange[0]} - ${priceRange[1]})
+            </label>
+          </div>
           <Slider
             value={priceRange}
             onChange={handlePriceRange}
@@ -129,37 +134,44 @@ function Navigation({
           />
         </div>
         {/* Date Pickers */}
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <DatePicker
-              label="Start Date"
-              value={dateRange[0]}
-              onChange={handleStartDateChange}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  size="small"
-                  variant="outlined"
-                  sx={{ width: 150, fontSize: "0.875rem" }}
-                />
-              )}
-            />
-            <Box sx={{ mx: 2 }}> to </Box>
-            <DatePicker
-              label="End Date"
-              value={dateRange[1]}
-              onChange={handleEndDateChange}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  size="small"
-                  variant="outlined"
-                  sx={{ width: 150, fontSize: "0.875rem" }}
-                />
-              )}
-            />
-          </Box>
-        </LocalizationProvider>
+        <div className="ml-2">
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <DatePicker
+                label="Start"
+                value={dateRange[0]}
+                onChange={handleStartDateChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    size="small"
+                    variant="outlined"
+                    sx={{
+                      width: 120, // Smaller width
+                      height: 30, // Reduce height
+                    }}
+                  />
+                )}
+              />
+              <Box sx={{ mx: 1 }}> to </Box>
+              <DatePicker
+                label="End"
+                value={dateRange[1]}
+                onChange={handleEndDateChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    size="small"
+                    variant="outlined"
+                    sx={{
+                      width: 120, // Keep consistent width
+                    }}
+                  />
+                )}
+              />
+            </Box>
+          </LocalizationProvider>
+        </div>
       </div>
     </div>
   );
