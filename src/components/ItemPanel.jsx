@@ -23,7 +23,7 @@ function ItemPanel({ items = [], category }) {
           <div key={rowIndex} className="flex flex-row gap-4">
             {row.map((item, itemIndex) => (
               <MediaCard
-                key={itemIndex} // Add a key for each MediaCard
+                key={itemIndex}
                 item={item}
                 size={isMobile ? 100 : (1 / cardsPerRow) * 100}
                 className="flex-1"

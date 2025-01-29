@@ -47,7 +47,7 @@ async function fetchItems(bounds, priceRange, query, category, dateRange) {
 
 const containerStyleDesktop = {
   width: "100%",
-  height: "90vh",
+  height: "85vh",
   pointerEvents: "auto",
 };
 
@@ -219,6 +219,23 @@ const Map = ({
   const [markers, setMarkers] = useState([]);
 
   const [open, setOpen] = useState(false);
+  const containerStyleDesktop = {
+    width: "100%",
+    height: "90vh",
+    pointerEvents: "auto",
+  };
+
+  const containerStyleDesktopWithPanel = {
+    width: "calc(100% - 400px)", // Shrinks by panel width (adjust as needed)
+    height: "90vh",
+    pointerEvents: "auto",
+  };
+
+  const containerStyleMobile = {
+    width: "100%",
+    height: "85vh",
+    pointerEvents: "auto",
+  };
 
   const boxstyle = {
     position: "absolute",
@@ -333,7 +350,7 @@ const Map = ({
   const isMobile = useMediaQuery("(max-width: 768px)");
   const [openPanel, setOpenPanel] = useState(false);
   const togglePanel = () => {
-    setOpen((prev) => !prev);
+    setOpenPanel((prev) => !prev);
   };
 
   const MobilePopOut = (
@@ -391,125 +408,182 @@ const Map = ({
     <>
       {isLoaded ? (
         <>
-          <GoogleMap
-            onLoad={handleOnLoad}
-            mapContainerStyle={
-              isMobile
-                ? openPanel
-                  ? containerStyleMobilePopUpOpen
-                  : containerStyleMobilePopUpClosed
-                : containerStyleDesktop
-            }
-            center={center}
-            zoom={16}
-            onDragEnd={handleDragEnd}
-            onZoomChanged={handleZoomChange}
-            options={{
-              draggable: true,
-              fullscreenControl: false,
-              clickableIcons: false,
-              streetViewControl: false,
-              styles: purp,
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              height: "90vh",
             }}
           >
-            {isMobile && MobilePopOut}
-            {markers.map(({ id, price, position, name, description, item }) => (
-              <MarkerF
-                key={id}
-                position={position}
-                onClick={() => handleActiveMarker(id)}
-                icon={{
-                  url:
-                    activeMarker == id
-                      ? createPriceMarker(price, "#9E4B9E")
-                      : createPriceMarker(price, "#DAB1DA"),
-                  scaledSize: new google.maps.Size(80, 40),
-                  anchor: new google.maps.Point(40, 40),
+            <GoogleMap
+              onLoad={handleOnLoad}
+              mapContainerStyle={
+                isMobile
+                  ? openPanel
+                    ? containerStyleMobilePopUpOpen
+                    : containerStyleMobilePopUpClosed
+                  : containerStyleDesktop
+              }
+              center={center}
+              zoom={16}
+              onDragEnd={handleDragEnd}
+              onZoomChanged={handleZoomChange}
+              options={{
+                draggable: true,
+                fullscreenControl: false,
+                clickableIcons: false,
+                streetViewControl: false,
+                styles: purp,
+              }}
+            >
+              {markers.map(
+                ({ id, price, position, name, description, item }) => (
+                  <MarkerF
+                    key={id}
+                    position={position}
+                    onClick={() => handleActiveMarker(id)}
+                    icon={{
+                      url:
+                        activeMarker == id
+                          ? createPriceMarker(price, "#9E4B9E")
+                          : createPriceMarker(price, "#DAB1DA"),
+                      scaledSize: new google.maps.Size(80, 40),
+                      anchor: new google.maps.Point(40, 40),
+                    }}
+                  >
+                    {activeMarker === id ? (
+                      <InfoWindowF
+                        options={{
+                          maxWidth: 200,
+                          pixelOffset: new google.maps.Size(0, -30),
+                          closeButton: false,
+                        }}
+                        onCloseClick={() => setActiveMarker(undefined)}
+                      >
+                        <div style={{ padding: 0, margin: 0 }}>
+                          <Carousel
+                            onClick={() => setOpen(true)}
+                            value={[item.image_url]}
+                            numVisible={1}
+                            numScroll={1}
+                            responsiveOptions={responsiveOptions}
+                            itemTemplate={(image_url) => (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  height: "150px",
+                                  width: "100%",
+                                }}
+                              >
+                                <img
+                                  src={image_url}
+                                  alt={"image"}
+                                  style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "cover",
+                                  }}
+                                />
+                              </div>
+                            )}
+                            verticalViewPortHeight="150px"
+                          />
+                          <Modal
+                            open={open}
+                            onClose={() => setOpen(false)}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
+                          >
+                            <Box sx={boxstyle}>
+                              <Typography
+                                id="modal-modal-title"
+                                variant="h6"
+                                component="h2"
+                              >
+                                {name}
+                              </Typography>
+                              <Typography
+                                id="modal-modal-description"
+                                sx={{ mt: 2 }}
+                              >
+                                Price: ${price}.00
+                              </Typography>
+                              <img
+                                src={item.image_url}
+                                alt={name}
+                                style={{
+                                  width: "100%",
+                                  height: "auto",
+                                  objectFit: "cover",
+                                  marginBottom: "16px",
+                                }}
+                              />
+                              <Typography
+                                id="modal-modal-description"
+                                sx={{ mt: 2 }}
+                              >
+                                {description}
+                              </Typography>
+                            </Box>
+                          </Modal>
+                        </div>
+                      </InfoWindowF>
+                    ) : null}
+                  </MarkerF>
+                )
+              )}
+            </GoogleMap>
+            {!isMobile && openPanel && (
+              <Box
+                sx={{
+                  width: "400px",
+                  height: "100%",
+                  overflowY: "auto",
+                  boxShadow: 3,
+                  backgroundColor: "white",
                 }}
               >
-                {activeMarker === id ? (
-                  <InfoWindowF
-                    options={{
-                      maxWidth: 200,
-                      pixelOffset: new google.maps.Size(0, -30),
-                      closeButton: false,
-                    }}
-                    onCloseClick={() => setActiveMarker(undefined)}
-                  >
-                    <div style={{ padding: 0, margin: 0 }}>
-                      <Carousel
-                        onClick={() => setOpen(true)}
-                        value={[item.image_url]}
-                        numVisible={1}
-                        numScroll={1}
-                        responsiveOptions={responsiveOptions}
-                        itemTemplate={(image_url) => (
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              height: "150px",
-                              width: "100%",
-                            }}
-                          >
-                            <img
-                              src={image_url}
-                              alt={"image"}
-                              style={{
-                                width: "100%",
-                                height: "100%",
-                                objectFit: "cover",
-                              }}
-                            />
-                          </div>
-                        )}
-                        verticalViewPortHeight="150px"
-                      />
-                      <Modal
-                        open={open}
-                        onClose={() => setOpen(false)}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                      >
-                        <Box sx={boxstyle}>
-                          <Typography
-                            id="modal-modal-title"
-                            variant="h6"
-                            component="h2"
-                          >
-                            {name}
-                          </Typography>
-                          <Typography
-                            id="modal-modal-description"
-                            sx={{ mt: 2 }}
-                          >
-                            Price: ${price}.00
-                          </Typography>
-                          <img
-                            src={item.image_url}
-                            alt={name}
-                            style={{
-                              width: "100%",
-                              height: "auto",
-                              objectFit: "cover",
-                              marginBottom: "16px",
-                            }}
-                          />
-                          <Typography
-                            id="modal-modal-description"
-                            sx={{ mt: 2 }}
-                          >
-                            {description}
-                          </Typography>
-                        </Box>
-                      </Modal>
-                    </div>
-                  </InfoWindowF>
-                ) : null}
-              </MarkerF>
-            ))}
-          </GoogleMap>
+                <ItemPanel items={visibleItems} />
+              </Box>
+            )}
+            {/* Mobile Popout Panel */}
+            {isMobile && (
+              <Slide direction="left" in={openPanel} mountOnEnter unmountOnExit>
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                    width: "50%", // Popout width for mobile
+                    height: "85vh", // Matches the map's height
+                    backgroundColor: "white",
+                    boxShadow: 3,
+                    overflowY: "auto",
+                  }}
+                >
+                  <ItemPanel items={visibleItems} />
+                </Box>
+              </Slide>
+            )}
+
+            {/* Panel Toggle Button */}
+            {isMobile && (
+              <IconButton
+                onClick={togglePanel}
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  right: openPanel ? "50%" : "0%", // Adjusted for mobile popout
+                  transform: "translateY(-50%)",
+                  zIndex: 1300,
+                }}
+              >
+                {openPanel ? <ArrowForwardIosIcon /> : <ArrowBackIosNewIcon />}
+              </IconButton>
+            )}
+          </Box>
         </>
       ) : null}
     </>

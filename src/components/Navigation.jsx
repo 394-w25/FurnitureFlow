@@ -16,6 +16,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import { useMediaQuery } from "@mui/material";
 
 function Navigation({
   mapBounds,
@@ -35,7 +36,7 @@ function Navigation({
   setDateRange,
 }) {
   const [isFavorite, setIsFavorited] = useState(false);
-
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -84,23 +85,99 @@ function Navigation({
     navigate("/post");
   };
 
+  const dropdownButtonsAndPriceSliderAndDatePickers = (
+    <div className="mr-4">
+      {/* Dropdowns Buttons */}
+      <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
+        <FormControl variant="outlined" size="small" className="w-40">
+          <InputLabel id="category-label" sx={{ fontSize: "0.875rem" }}>
+            Categories
+          </InputLabel>
+          <Select
+            labelId="category-label"
+            id="category-select"
+            value={category}
+            onChange={handleCategoryChange}
+            label="Categories"
+            sx={{ fontSize: "0.875rem" }}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+
+            <MenuItem value="Couch">Couch</MenuItem>
+            <MenuItem value="Dresser">Dresser</MenuItem>
+            <MenuItem value="Table">Table</MenuItem>
+          </Select>
+        </FormControl>
+        {/* Price Slider */}
+        <div className="w-36 md:w-40">
+          <label className="block text-[0.75rem] font-medium text-gray-700 mb-1">
+            Prices (${priceRange[0]} - ${priceRange[1]})
+          </label>
+          <Slider
+            value={priceRange}
+            onChange={handlePriceRange}
+            valueLabelDisplay="auto"
+            min={0}
+            max={2000}
+            step={10}
+            aria-labelledby="price-slider"
+          />
+        </div>
+        {/* Date Pickers */}
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <DatePicker
+              label="Start Date"
+              value={dateRange[0]}
+              onChange={handleStartDateChange}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  size="small"
+                  variant="outlined"
+                  sx={{ width: 150, fontSize: "0.875rem" }}
+                />
+              )}
+            />
+            <Box sx={{ mx: 2 }}> to </Box>
+            <DatePicker
+              label="End Date"
+              value={dateRange[1]}
+              onChange={handleEndDateChange}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  size="small"
+                  variant="outlined"
+                  sx={{ width: 150, fontSize: "0.875rem" }}
+                />
+              )}
+            />
+          </Box>
+        </LocalizationProvider>
+      </div>
+    </div>
+  );
+
   return (
     <nav className="bg-white shadow w-full">
-      <div className="flex items-center justify-between px-4 py-4">
+      <div className="flex items-center justify-between pl-4 py-4 ml-0">
         {/* Left Hand image logo */}
         <a href="/">
           <div className="flex-shrink-0">
             <img
               src="/images/logo_with_name.PNG"
               alt="App Logo with Title"
-              className="h-12"
+              className="h-12 min-w-[160px]"
             />
           </div>
         </a>
         {/* Search Bar Center and Dropdowns*/}
         {showSearchBar && (
-          <div className="flex-1 flex items-center justify-center space-x-4 mx-4">
-            <div className="flex-1 mx-4">
+          <div className="flex-1 flex items-center justify-center mr-4">
+            <div className="flex-1 mr-2">
               <SearchBar
                 mapBounds={mapBounds}
                 setMapBounds={setMapBounds}
@@ -110,82 +187,11 @@ function Navigation({
                 setQuery={setQuery}
               />
             </div>
-            {/* Dropdowns Buttons */}
-            <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
-              <FormControl variant="outlined" size="small" className="w-40">
-                <InputLabel id="category-label" sx={{ fontSize: "0.875rem" }}>
-                  Categories
-                </InputLabel>
-                <Select
-                  labelId="category-label"
-                  id="category-select"
-                  value={category}
-                  onChange={handleCategoryChange}
-                  label="Categories"
-                  sx={{ fontSize: "0.875rem" }}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-
-                  <MenuItem value="Couch">Couch</MenuItem>
-                  <MenuItem value="Dresser">Dresser</MenuItem>
-                  <MenuItem value="Table">Table</MenuItem>
-                </Select>
-              </FormControl>
-              {/* Price Slider */}
-              <div className="w-36 md:w-40">
-                <label className="block text-[0.75rem] font-medium text-gray-700 mb-1">
-                  Prices (${priceRange[0]} - ${priceRange[1]})
-                </label>
-                <Slider
-                  value={priceRange}
-                  onChange={handlePriceRange}
-                  valueLabelDisplay="auto"
-                  min={0}
-                  max={2000}
-                  step={10}
-                  aria-labelledby="price-slider"
-                />
-              </div>
-              {/* Date Pickers */}
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <DatePicker
-                    label="Start Date"
-                    value={dateRange[0]}
-                    onChange={handleStartDateChange}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        size="small"
-                        variant="outlined"
-                        sx={{ width: 150, fontSize: "0.875rem" }}
-                      />
-                    )}
-                  />
-                  <Box sx={{ mx: 2 }}> to </Box>
-                  <DatePicker
-                    label="End Date"
-                    value={dateRange[1]}
-                    onChange={handleEndDateChange}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        size="small"
-                        variant="outlined"
-                        sx={{ width: 150, fontSize: "0.875rem" }}
-                      />
-                    )}
-                  />
-                </Box>
-              </LocalizationProvider>
-            </div>
           </div>
         )}
-
+        {!isMobile && dropdownButtonsAndPriceSliderAndDatePickers}
         {/* Icons */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 mr-4">
           <Button
             variant="contained"
             startIcon={<AddIcon />}
@@ -241,6 +247,7 @@ function Navigation({
           )} */}
         </div>
       </div>
+      {isMobile && dropdownButtonsAndPriceSliderAndDatePickers}
     </nav>
   );
 }
