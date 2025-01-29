@@ -88,28 +88,31 @@ function Navigation({
   const dropdownButtonsAndPriceSliderAndDatePickers = (
     <div className="mr-4">
       {/* Dropdowns Buttons */}
-      <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
-        <FormControl variant="outlined" size="small" className="w-40">
-          <InputLabel id="category-label" sx={{ fontSize: "0.875rem" }}>
-            Categories
-          </InputLabel>
-          <Select
-            labelId="category-label"
-            id="category-select"
-            value={category}
-            onChange={handleCategoryChange}
-            label="Categories"
-            sx={{ fontSize: "0.875rem" }}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
+      <div className="flex md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
+        <div className="mx-2 mr-[-30px]">
+          <FormControl variant="outlined" size="small" className="w-40">
+            <InputLabel id="category-label" sx={{ fontSize: "0.875rem" }}>
+              Categories
+            </InputLabel>
+            <Select
+              labelId="category-label"
+              id="category-select"
+              value={category}
+              onChange={handleCategoryChange}
+              label="Categories"
+              sx={{ fontSize: "0.875rem" }}
+              className=" min-w-[115px] max-w-[115px]"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
 
-            <MenuItem value="Couch">Couch</MenuItem>
-            <MenuItem value="Dresser">Dresser</MenuItem>
-            <MenuItem value="Table">Table</MenuItem>
-          </Select>
-        </FormControl>
+              <MenuItem value="Couch">Couch</MenuItem>
+              <MenuItem value="Dresser">Dresser</MenuItem>
+              <MenuItem value="Table">Table</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
         {/* Price Slider */}
         <div className="w-36 md:w-40">
           <label className="block text-[0.75rem] font-medium text-gray-700 mb-1">
