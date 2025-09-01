@@ -14,45 +14,44 @@ export const AuthProvider = ({ children }) => {
 
   const getUserById = async (user_id) => {
     try {
-      const res = await axios.post("https://fetchuserbyid-jbhycjd2za-uc.a.run.app", {
-        user_id: user_id
-      },
-      { 
-        headers: { "Content-Type": "application/json" } 
-      })
+      const res = await axios.post(
+        "https://fetchuserbyid-jbhycjd2za-uc.a.run.app",
+        {
+          user_id: user_id,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
-      return res.data.user
+      return res.data.user;
+    } catch (error) {
+      return null;
     }
-    catch(error) {
-      return null
-    }
-  }
-
+  };
 
   useEffect(() => {
     // Subscribe to authentication state changes
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         // Check if the email ends with "@u.northwestern.edu"
-        if (currentUser.email.endsWith("@u.northwestern.edu")) {
-          // Fetch additional user data from Firestore if needed
-          
-          const userData = await getUserById(currentUser.uid);
-          if (userData) {
-            console.log("user already added")
-            setUser({...currentUser, ...userData})
-          }
-          else {
-            const newUserData = await saveUserData(currentUser)
-            console.log("user added:", newUserData)
-            setUser({...currentUser, ...newUserData})
-          }
+        // if (currentUser.email.endsWith("@u.northwestern.edu")) {
+        // Fetch additional user data from Firestore if needed
+
+        const userData = await getUserById(currentUser.uid);
+        if (userData) {
+          console.log("user already added");
+          setUser({ ...currentUser, ...userData });
         } else {
-          // If email domain is not allowed, sign the user out
-          await signOut(auth);
-          alert("Only Northwestern emails are allowed.");
-          setUser(null);
+          const newUserData = await saveUserData(currentUser);
+          console.log("user added:", newUserData);
+          setUser({ ...currentUser, ...newUserData });
         }
+        // } else {
+        // If email domain is not allowed, sign the user out
+        // await signOut(auth);
+        // alert("Only Northwestern emails are allowed.");
+        // setUser(null);
       } else {
         setUser(null);
       }

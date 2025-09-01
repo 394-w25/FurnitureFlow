@@ -68,7 +68,7 @@ const Login = () => {
       //     await auth.signOut();
       //   }
       navigate("/");
-      alert("For time being, platform's open to all");
+    //   alert("For time being, platform's open to all");
     } catch (error) {
       console.error("Error during sign-in:", error.message);
       alert("Please use your Northwestern email to sign in. Please try again.");
