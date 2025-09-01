@@ -56,12 +56,14 @@ const Login = () => {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
 
-      if (user.email.endsWith("@u.northwestern.edu")) {
-        navigate("/"); // Navigate to the homepage
-      } else {
-        alert("Only Northwestern emails are allowed");
-        await auth.signOut();
-      }
+    //   if (user.email.endsWith("@u.northwestern.edu")) {
+    //     navigate("/"); // Navigate to the homepage
+    //   } else {
+    //     alert("Only Northwestern emails are allowed");
+    //     await auth.signOut();
+    //   }
+      navigate("/");
+      alert("Opening up platform to all for time being");
     } catch (error) {
       console.error("Error during sign-in:", error.message);
       alert("Please use your Northwestern email to sign in. Please try again.");
